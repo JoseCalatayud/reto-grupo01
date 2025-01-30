@@ -1,0 +1,19 @@
+{
+  "name": "front",
+  "version": "1.0.0",
+  "description": "Front reto grupo",
+  "main": "index.js",
+  "scripts": {
+    "server": "npx parcel src/index.html",
+    "construir": "npx parcel build ./src/javascript/index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Grupo01",
+  "license": "Apache-2.0",
+  "devDependencies": {
+    "parcel": "^2.13.3"
+  },
+  "dependencies": {
+    "jquery": "^3.7.1"
+  }
+}
