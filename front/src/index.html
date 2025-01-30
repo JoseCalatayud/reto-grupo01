@@ -3,9 +3,71 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="../node_modules/jquery/dist/jquery.min.js"></script>
+    <script type="text/javascript" src="javascript/index.js"></script>
     <title>Document</title>
 </head>
 <body>
-    <h1>Hole desde parcel</h1>
+    <section class="maestro">
+        <div class="tablaMaestro">
+            <div class="tabla">
+                <h1>Lista de Partidos</h1>
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th scope="col">Nombre</th>
+                            <th scope="col">Deporte</th>
+                            <th scope="col">Apuesta</th>
+                            <th scope="col">Resultado</th>
+                        </tr>
+                    </thead>
+                    <tbody class="table-group-divider">
+                    </tbody>
+                </table>
+            </div>
+            <div class="botones">
+                <button type="button" id="refrescar" class="btn btn-primary">Refrescar</button>
+                <button type="button" id="añadir" class="btn btn-primary">Añadir</button>
+            </div>
+        </div>
+    </section>
+    <section class="zonaDetalle">
+        <h1 id="tituloDetalle">Detalle del Partido</h1>
+        
+            <input type="text" id="id" hidden>
+            <div class="input-group mb-3">
+                <span class="input-group-text">Partido</span>
+                <input type="text" class="form-control" id="nombrePartido" aria-label="nombrePartido"
+                    aria-describedby="basic-addon1">
+            </div>
+
+            <div class="input-group mb-3">
+                <span class="input-group-text">Descripción</span>
+                <textarea class="form-control" id="descripcionPartido"
+                    aria-label="descripcionProducto With textarea"></textarea>
+            </div>
+
+            <div class="input-group mb-3">
+                <span class="input-group-text">Deporte</span>
+                <input type="text" class="form-control" id="deporte" aria-label="deporte"
+                    aria-describedby="basic-addon1">
+            </div>
+
+            <div class="input-group mb-3">
+                <span class="input-group-text">Resultado</span>
+                <input type="text" class="form-control" id="resultado" aria-label="Stock"
+                    aria-describedby="basic-addon2">
+            </div>
+
+            <div class="input-group mb-3">
+                <span class="input-group-text">Importe apuesta</span>
+                <input type="text" class="form-control" id="apuestaPartido" aria-label="apuestaPartido"
+                    aria-describedby="basic-addon2">
+            </div>
+            <button type="button" id="botonCambios" class="btn btn-primary">Guardar</button>
+            <button type="button" id="botonCancelar" class="btn btn-primary">Cancelar</button>
+        
+
+    </section>
 </body>
 </html>
