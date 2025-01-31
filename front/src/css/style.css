@@ -10,7 +10,7 @@ body {
     background-color: rgb(69, 70, 74);
 }
 
-td.precio {
+td.apuesta {
     text-align: right;
 }
 
@@ -27,6 +27,10 @@ th:last-child {
     justify-items: end;
     
     
+}
+
+.zonaDetalle span {
+    width: 10em;
 }
 .tablaMaestro {
     display: flex;
