@@ -1,12 +1,17 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script src="../node_modules/jquery/dist/jquery.min.js"></script>
     <script type="text/javascript" src="javascript/index.js"></script>
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.bundle.min.js"></script>
+    <link rel="stylesheet" href="css/style.css">
     <title>Document</title>
 </head>
+
 <body>
     <section class="maestro">
         <div class="tablaMaestro">
@@ -33,41 +38,89 @@
     </section>
     <section class="zonaDetalle">
         <h1 id="tituloDetalle">Detalle del Partido</h1>
-        
-            <input type="text" id="id" hidden>
-            <div class="input-group mb-3">
-                <span class="input-group-text">Partido</span>
-                <input type="text" class="form-control" id="nombrePartido" aria-label="nombrePartido"
-                    aria-describedby="basic-addon1">
-            </div>
 
-            <div class="input-group mb-3">
-                <span class="input-group-text">Descripción</span>
-                <textarea class="form-control" id="descripcionPartido"
-                    aria-label="descripcionProducto With textarea"></textarea>
-            </div>
+        <input type="text" id="id" hidden>
+        <div class="input-group mb-3">
+            <span class="input-group-text">Partido</span>
+            <input type="text" class="form-control" id="nombrePartido" aria-label="nombrePartido"
+                aria-describedby="basic-addon1">
+        </div>
 
-            <div class="input-group mb-3">
-                <span class="input-group-text">Deporte</span>
-                <input type="text" class="form-control" id="deporte" aria-label="deporte"
-                    aria-describedby="basic-addon1">
-            </div>
+        <div class="input-group mb-3">
+            <span class="input-group-text">Descripción</span>
+            <textarea class="form-control" id="descripcionPartido"
+                aria-label="descripcionPartido With textarea"></textarea>
+        </div>
 
-            <div class="input-group mb-3">
-                <span class="input-group-text">Resultado</span>
-                <input type="text" class="form-control" id="resultado" aria-label="Stock"
-                    aria-describedby="basic-addon2">
-            </div>
+        <div class="input-group mb-3">
+            <span class="input-group-text">Deporte</span>
+            <input type="text" class="form-control" id="deporte" aria-label="deporte" aria-describedby="basic-addon1">
+        </div>
 
-            <div class="input-group mb-3">
-                <span class="input-group-text">Importe apuesta</span>
-                <input type="text" class="form-control" id="apuestaPartido" aria-label="apuestaPartido"
-                    aria-describedby="basic-addon2">
-            </div>
-            <button type="button" id="botonCambios" class="btn btn-primary">Guardar</button>
-            <button type="button" id="botonCancelar" class="btn btn-primary">Cancelar</button>
-        
+        <div class="input-group mb-3">
+            <span class="input-group-text">Resultado</span>
+            <select class="form-control" id="resultado" aria-label="Resultado" aria-describedby="basic-addon2">
+                <option value="1">Ganar</option>
+                <option value="0">Empatar</option>
+                <option value="-1">Perder</option>
+            </select>
+        </div>
+
+        <div class="input-group mb-3">
+            <span class="input-group-text">Importe apuesta</span>
+            <input type="text" class="form-control" id="apuestaPartido" aria-label="apuestaPartido"
+                aria-describedby="basic-addon2">
+        </div>
+        <button type="button" id="botonCambios" class="btn btn-primary">Guardar</button>
+        <button type="button" id="botonCancelar" class="btn btn-primary">Cancelar</button>
+
 
     </section>
+
+
+    <!-- Modal modificar, guardar, borrar -->
+    <div class="modal fade" id="miModal" tabindex="-1" role="dialog" aria-labelledby="miModalLabel" aria-hidden="false">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="miModalLabel">Modificar Entrada</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="false">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <!-- Aquí va el contenido del modal -->
+                    <p id="preguntaModal">¿Deseas guardar?</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                    <button type="button" id="confirmarAccion" class="btn btn-primary">Confirmar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade" id="miModalValidar" tabindex="-1" role="dialog" aria-labelledby="miModalValidarLabel"
+        aria-hidden="false">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="miModalValidarLabel">Error en los datos</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="false">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <!-- Aquí va el contenido del modal -->
+                    <p id="preguntaModalValidar"></p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
 </body>
+
 </html>

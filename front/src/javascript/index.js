@@ -46,7 +46,7 @@ $(function () {
                 });
             },
             error: function (error) {
-                mostrarError("Error al listar los productos")
+                mostrarError("Error al listar los partidos")
                 console.log(error)
             },
             complete: function (data) {
@@ -59,33 +59,41 @@ $(function () {
 
                     event.stopPropagation();
                     var id = $(this).data('id');
-                    borrarPartido(id);
-                    console.log('Hola desde botonBorrar');
+                    mostrarModalConfirmacion('Borrar Partido', 'Confirmar', () => {
+                        borrarPartido(id);
+                    });
+                   
                 });
 
                 $('tbody').on('click', '.botonMaestro.ganar', function (event) {
 
                     event.stopPropagation();
                     var id = $(this).data('id');
-                    setTimeout(ganar(id),1000)
+                    mostrarModalConfirmacion('Modificar Resultado', 'Confirmar', () => {
+                        ganar(id);
+                    });
+                    
                 });
                 $('tbody').on('click', '.botonMaestro.perder', function (event) {
 
                     event.stopPropagation();
                     var id = $(this).data('id');
-                    setTimeout(perder(id), 3000);
+                    mostrarModalConfirmacion('Modificar Resultado', 'Confirmar', () => {
+                        perder(id);
+                    });
+                   
                 });
                 $('tbody').on('click', '.botonMaestro.detalle', function (event) {
 
                     event.stopPropagation();
                     var id = $(this).data('id');
                     console.log('Hola desde boton VerDetalle');
-                    verDetalleProducto(id);
-                    $('#tituloDetalle').text('Detalles del producto');
+                    verDetallePartido(id);
+                    $('#tituloDetalle').text('Detalles del partido');
                     $('#botonCambios').text('Modificar').off().on('click', function () {
                         if (verificarCampos()) {
-                            mostrarModalConfirmacion('Modificar producto', '¿Modificar producto?', () => {
-                                guardarDatos();
+                            mostrarModalConfirmacion('Modificar partido', '¿Modificar partido?', () => {
+                                guardarDatosPartido();
                             });
                         }
                     });
@@ -117,13 +125,13 @@ $(function () {
 
             },
             error: function (error) {
-                //mostrarError("Fallo al eliminar el partido")
+                mostrarError("Fallo al eliminar el partido")
                 console.log(error)
             },
 
         })
     }
-    function verDetalleProducto(id) {
+    function verDetallePartido(id) {
         $.ajax({
             url: `http://localhost:1234/api/partidos/${id}`,
             success: function (data) {
@@ -131,7 +139,7 @@ $(function () {
                 $('#nombrePartido').val(data.nombre)
                 $('#descripcionPartido').val(data.descripcion)
                 $('#deporte').val(data.deporte)
-                $('#resultado').val(mostrarResultado(data.resultado))
+                $('#resultado').val((data.resultado))
                 $('#apuestaPartido').val(parseFloat(data.apuesta).toFixed(2) + ' €')
 
                 if (data.id >= 0) {
@@ -161,6 +169,7 @@ $(function () {
             }
         })
     }
+
     function perder(id) {
         $.ajax({
             url: `http://localhost:1234/api/partidos/${id}/pierde`,
@@ -176,18 +185,158 @@ $(function () {
             }
         })
     }
+    function insertarPartido(datos) {
+        $.ajax({
+            url: "http://localhost:1234/api/partidos",
+            type: "POST",
+            data: JSON.stringify(datos),
+            contentType: "application/json",
+            success: function (respuesta) {
+                console.log(respuesta)
+                refrescar()
+            },
+            error: (error) => {
+                mostrarError('Fallo al guardar el partido')
+            }
+        })
+    }
+    function modificarPartido(id, datos) {
+
+        $.ajax({
+            url: `http://localhost:1234/api/partidos/${id}`,
+            type: "PUT",
+            data: JSON.stringify(datos),
+            contentType: "application/json",
+            success: function (data) {
+                refrescar()
+            },
+            error: function (error) {
+                mostrarError('Fallo al modificar el partido')
+                console.log(error)
+            }
+        })
+    }
+    function guardarDatosPartido() {
+
+        
+        let id = $('#id').val();
+        let nombre = $('#nombrePartido').val()
+        let descripcion = $('#descripcionPartido').val();
+        let deporte = $('#deporte').val();
+        let resultado = $('#resultado').val();
+        let apuesta = ($('#apuestaPartido').val()).replace(/\s?€/g, '');
+        let datos = {
+            "id": id,
+            "nombre": nombre,
+            "descripcion": descripcion,
+            "deporte": deporte,
+            "resultado": resultado,
+            "apuesta": apuesta
+        }
+        if (datos.id != 0) {
+            limpiarDetalle()
+            modificarPartido(id, datos)
+
+        } else {
+            limpiarDetalle()
+            insertarPartido(datos);
+        }
+
+
+    }
     function mostrarDetalle() {
         $('.zonaDetalle').show();
-        //$('button.botonMaestro').prop('disabled', true);
+        $('button.botonMaestro').prop('disabled', true);
     }
-
+    
     function refrescar() {
         $('.zonaDetalle').hide();
-        //$('#botonCambios').off()
+        $('#botonCambios').off()
         getPartidos();
     }
+    function limpiarDetalle() {
+        $('.zonaDetalle').hide();
+        $('#id').val(0);
+        $('#nombrePartido').val('')
+        $('#descripcionPartido').val('');
+        $('#deporte').val('');
+        $('#resultado').val('');
+        $('#apuestaPartido').val('');
+    }
+    function mostrarModalConfirmacion(titulo, mensaje, callback) {
+        $('#miModalLabel').text(titulo);
+        $('#preguntaModal').text(mensaje);
+        $('#miModal').modal('show');
+        $('#confirmarAccion').off().click(function () {
+            callback();
+            $('#miModal').modal('hide');
+        });
+    }
 
+    function verificarCampos() {
+        let id = $('#id').val();
+        let nombre = $('#nombrePartido').val().trim();
+        let descripcion = $('#descripcionPartido').val().trim();
+        let deporte = $('#deporte').val().trim();
+        let resultado = $('#resultado').val();
+        let apuesta = $('#apuestaPartido').val().trim().replace(/\s?€/g, '');
+
+        if (!nombre) {
+            mostrarError("Partido es un campo obligatorio.");
+            return false;
+        }
+
+        if (!descripcion) {
+            mostrarError("La descripción es obligatoria.");
+            return false;
+        }
+        if (!deporte) {
+            mostrarError("Deporte es un campo obligatorio.");
+            return false;
+        }
+        if (!resultado) {
+            mostrarError("Resultado del partido es obligatorio.");
+            return false;
+        }
+
+        if (!apuesta || isNaN(apuesta) || parseInt(apuesta) < 0) {
+            mostrarError("La cantidad debe ser un número válido y no negativo.");
+            return false;
+        }
+
+        
+
+        return true;
+    }
+    function mostrarError(mensaje) {
+        $('#preguntaModalValidar').text(mensaje);
+        $('#miModalValidar').modal('show');
+    }
     getPartidos()
+
+    $('#botonCancelar').on('click', function () {
+        refrescar()
+    })
+    $('#añadir').on('click', function () {
+        limpiarDetalle();
+        $('#tituloDetalle').text('Datos del nuevo partido')
+        mostrarDetalle();
+        $('#botonCambios').text('Crear Partido').off().on('click', function () {
+            if (verificarCampos()) {
+                $('#miModalLabel').text('Añadir partido')
+                $('#preguntaModal').text('¿Seguro que quieres añadir?')
+                $('#miModal').modal('show');
+                $('#confirmarAccion').off().click(function () {
+                    guardarDatosPartido();
+                    $('#miModal').modal('hide');
+                });
+
+            }
+            
+        })
+        
+        
+    })
     $('#refrescar').on('click', function () {
         refrescar()
     })
